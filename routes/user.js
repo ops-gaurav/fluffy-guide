@@ -42,9 +42,14 @@ passport.deserializeUser ((user, done) => {
 //     	// if auth fail then passport will send 401 unauthorized error
 // });
 
-router.post ('/auth', passport.authenticate ('local', {failureFlash: 'Error Authenticating', successFlash: 'Authenticated'}, (req, res) => {
+/*
+UNDERSTAND THIS CONCEPT flash, session
+*/
+router.post ('/auth', passport.authenticate ('local', {
+	failureFlash: 'Error Authenticating', 
+	successFlash: 'Authenticated'}), (req, res) => {
 	res.end();
-}));
+});
 
 router.post ('/signup', (req, res) => {
     let data = req.body;
