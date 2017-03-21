@@ -8,6 +8,7 @@ import passport from 'passport';
 import pLocal from 'passport-local';
 import sassMiddleware from 'node-sass-middleware';
 import index from './routes/index';
+import usersRouter from './routes/user';
 
 import UserSchema from './models/UserModel';
 import mongoose from  'mongoose';
@@ -53,5 +54,6 @@ app.use(sassMiddleware({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+app.use ('/user', usersRouter);
 
 export default app;
