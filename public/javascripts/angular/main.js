@@ -1,4 +1,4 @@
-var mainApp = angular.module ('mainApp', ['ngRoute']);
+var mainApp = angular.module ('mainApp', ['ngRoute', 'ngResource']);
 
 mainApp.config (['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 	$routeProvider
@@ -15,11 +15,21 @@ mainApp.config (['$routeProvider', '$locationProvider', function ($routeProvider
 	$locationProvider.html5Mode ({enabled: true, requireBase: false});
 }]);
 
-mainApp.controller ('LoginController', ['$scope', function ($scope) {
+mainApp.controller ('LoginController', ['$scope', '$resource', '$http', function ($scope, $resource, $http) {
 	$scope.loginAuth = function (){ 
-		if (!$scope.username || !$scope.password)
+		if (!$scope.username || !$scope.password) 
 			$scope.auth_error =  "Username and password required";
-		console.log ($scope.username+ '\t'+ $scope.password);
+		else {
+			$http({
+				method: 'POST',
+				url: 'http://localhost:3000/user/auth',
+				data: {username: $scope.username, password: $scope.password}
+			}). then (function successCallback (data) {
+				console.log ('SUCCESS: '+ JSON.stringify (data));
+			}, function errorCallback (data) {
+				console.log ("ERROR "+ JSON.stringify (data));
+			});
+		}
 	}
 }]);
 mainApp.controller ('SignupController', ['$scope', function ($scope) {
