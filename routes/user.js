@@ -34,10 +34,17 @@ passport.deserializeUser ((user, done) => {
     done (null, user);
 });
 // failureFlash will insturct the passport to flash an error message using the message option set by the verify callback
-router.post ('/auth', passport.authenticate('local', { successRedirect: '/dashboard', failureRedirect: '/', failureFlash: 'Invalid username or password'}), function (req, res) {
-    res.redirect ('/');
-    // if auth fail then passport will send 401 unauthorized error
-});
+// router.post ('/auth', passport.authenticate('local', { 
+// 	successRedirect: '/dashboard', 
+// 	failureRedirect: '/', 
+// 	failureFlash: 'Invalid username or password'}), function (req, res) {
+//     	res.redirect ('/');
+//     	// if auth fail then passport will send 401 unauthorized error
+// });
+
+router.post ('/auth', passport.authenticate ('local', {failureFlash: 'Error Authenticating', successFlash: 'Authenticated'}, (req, res) => {
+	res.end();
+}));
 
 router.post ('/signup', (req, res) => {
     let data = req.body;
