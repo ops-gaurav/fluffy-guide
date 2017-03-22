@@ -11,9 +11,12 @@ import flash from 'connect-flash';
 import sassMiddleware from 'node-sass-middleware';
 import index from './routes/index';
 import usersRouter from './routes/user';
+import multer from 'multer';
 
 const app = express();
 const debug = Debug('desc-task:app');
+
+var uploadStrategy = multer ({dest: 'uploads/'});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,6 +43,9 @@ app.use (passport.session ());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get ('/uus', (req, res) => {
+	res.send ('sdsdf');
+});
 app.use('/', index);
 app.use ('/user', usersRouter);
 

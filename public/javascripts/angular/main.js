@@ -19,12 +19,12 @@ mainApp.config (['$stateProvider', '$urlRouterProvider', '$locationProvider', fu
 		requireBase: false
 	});
 }]);
-mainApp.controller ('LoginController', ['$scope', '$window', 'LoginConnect', function ($scope, $window, LoginConnect) {
+mainApp.controller ('LoginController', ['$scope', '$window', 'UserServices', function ($scope, $window, UserServices) {
 	$scope.loginAuth = function (){ 
 		if (!$scope.username || !$scope.password) 
 			$scope.auth_error =  "Username and password required";
 		else {
-			LoginConnect.authenticate ({username: $scope.username, password: $scope.password}, (data) => {
+			UserServices.loginAuth().authenticate ({username: $scope.username, password: $scope.password}, (data) => {
 				if (data.status == 'success')
 					$window.location = '/dashboard';
 				else
@@ -33,14 +33,14 @@ mainApp.controller ('LoginController', ['$scope', '$window', 'LoginConnect', fun
 		}
 	}
 }]);
-mainApp.controller ('SignupController', ['$scope', '$window', 'SignupService', function ($scope, $location, $window, SignupService) {
+mainApp.controller ('SignupController', ['$scope', '$window', 'UserServices', function ($scope, $window, UserServices) {
 	$scope.signup = function () {
 		if ($scope.username && $scope.email && $scope.password  && $scope.cPassword) {
 
 			if ($scope.password == $scope.cPassword) {
 				$scope.auth_error = undefined;
 				
-				SignupService.register ({
+				UserServices.signup().register ({
 					username: $scope.username,
 					email: $scope.email,
 					password: $scope.password,
@@ -60,14 +60,16 @@ mainApp.controller ('SignupController', ['$scope', '$window', 'SignupService', f
 	};
 }]);
 
-mainApp.factory ('LoginConnect', ['$resource', function ($resource){
-	return $resource ('/user/auth', {username: '@username', password: '@password'}, {
-		authenticate: {method: 'POST'}
-	});
-}]);
+mainApp.service ('UserServices', ['$resource', function ($resource) {
+	this.loginAuth = function () {
+		return $resource ('/user/auth', {username: '@username', password: '@password'}, {
+			authenticate: {method: 'POST'}
+		});
+	};
 
-mainApp.factory ('SignupService', ['$resource', function ($resource) {
-	return $resource  ('/user/signup', {username: '@username', password: '@password', cPassword: '@cPassword', email: '@email'}, {
-		register: {method: 'POST'}
-	});
+	this.signup = function () {
+		return $resource  ('/user/signup', {username: '@username', password: '@password', cPassword: '@cPassword', email: '@email'}, {
+			register: {method: 'POST'}
+		});
+	}
 }]);

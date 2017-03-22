@@ -14,24 +14,31 @@ app.controller ('DashboardController', ['$scope', '$http', '$window', 'Upload', 
 		});
 	};
 
+	// CANNOT UPLOAD PIC MORE THAN ONCE WITHOUT RELOADING PAGE
+	// CHECK
 	$scope.fileUpload= function (file, errFiles) {
 		$scope.file = file;
-		var formData = new FormData();
-		formData.append ('file', file);
-
-		$http({
+		var url= '/user/image';
+		Upload.upload ({
+			url: url,
 			method: 'PUT',
-			url: '/user/image',
-			data: '',
-			headers: {
-				"Content-Type": 'multipart/form-data'
+			data: {avatar: file}
+		}). then (function (resp){ // success
+			// https://github.com/danialfarid/ng-file-upload
+			var response = resp.data;
+			if (response.status == 'success') {
+				console.log ('uploaded');
+				$('#user-img').attr ('src', '/user/image');
+			} else {
+				console.log ('some error '+ response.message);
 			}
-		}).then (function success(data) {
-			console.log (data);
-		}, function error(data) {
-			console.log (data);
-		});
+			
+		}, function (res) {
+			//catch error
+			console.log ('Error: '+ resp);
+		}, function (event) {
 
+		});
 	};
 }]);
 

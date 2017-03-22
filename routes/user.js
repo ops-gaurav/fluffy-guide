@@ -2,15 +2,35 @@ import express from 'express'
 var router = express.Router();
 import passport from 'passport';
 import pLocal from 'passport-local';
-
 import UserSchema from '../models/UserModel';
 import config from '../data/config';
 import mongoose from  'mongoose';
-import Busboy from 'busboy';
+import multer from 'multer';
+import fs from 'fs';
+import es6P from 'es6-promise';
+
+const es6Promise = es6P.Promise;
 
 var User = mongoose.model ('user', UserSchema);
 
 var LocalStrategy = pLocal.Strategy;
+
+// configure the storage location and filename
+// after saving image on secondary storage on server, load it
+// and save it in mongo db using fs.readFileSync()
+// rember for remove file after persisting into the db
+var storage = multer.diskStorage ({
+	destination: (req, file, next) => {
+		next (null, 'tempUploads/');
+	},
+	filename: (req, file, next) => {
+		req.image = {};
+		req.image.mimetype = file.mimetype;
+		next (null, req.user.username+ '_avatar');
+	}
+});
+
+var upload = multer({storage: storage}).single ('avatar');
 
 // we created a startegy here. now we assign it to a route
 passport.use ('LocalLoginAuthentication', new LocalStrategy ({
@@ -56,17 +76,81 @@ router.get ('/logout', (req, res) => {
     res.send ({status: 'success', message: 'Session destroyed'});
 });
 
+// router.put ('/image', upload.single ('avatar'), (req, res) => {
+
+// 	// mongoose.Promise = es6Promise;
+// 	// mongoose.connect (config.host, config.db);
+
+// 	// User.findOne ({username: req.user.username}, (err, doc) => {
+// 	// 	if (err) res.send ({status: 'error', message: 'Error: '+ err});
+// 	// 	else if (doc) {
+// 	// 		//doc.photo = fs.readFileSync ('tempUploads/'+ req.user.username+'_avatar');
+// 	// 		fs.readFile ('tempUploads/'+ req.user.username +'_avatar', (data) =>{
+// 	// 			doc.photo = {
+// 	// 				mime: req.image.mimetype,
+// 	// 				value: data
+// 	// 			};
+// 	// 			doc.save (). then (() => {
+// 	// 				res.send ({status: 'success', message: 'saved in db'});
+// 	// 			});
+// 	// 		});
+// 	// 		// doc.photo = {
+// 	// 		// 	mime: req.image.mimetype,
+// 	// 		// 	value: fs.readFile
+// 	// 		// };
+// 	// 	} else res.send ({status: 'error', message: 'No user'});
+
+// 	// 	mongoose.disconnect ();
+// 	// });
+// 	res.end();
+// });
+
+router.get ('/image', (req, res) => {
+	if (req.user) {
+		mongoose.Promise = es6Promise;
+		mongoose.connect (config.host, config.db);
+
+		User.findOne ({username: req.user.username}, (err, doc) => {
+			if (err) res.send ({status: 'error', message: 'server error: '+ err});
+			else if (doc) {
+				res.contentType (doc.photo.mime);
+				res.send (doc.photo.value);
+			} else res.send ({status: 'error', message: 'No data'});
+
+			mongoose.disconnect ();
+		});
+	} else res.send ({status: 'error', message: 'no session'});
+});
 router.put ('/image', (req, res) => {
-    console.log (req.headers);
-    //console.log (req.files);
-    var busboy = new Busboy ({headers: req.headers});
-    busboy.on ('file', (fieldname, file, filename, encoding, mimetype)=> {
-        console.log ('file');
-        file.on ('data', (data) => {
-            console.log (data.length+' byte(s) sent');
-        });
-    });
-    res.end ();
+	upload (req, res, function (err) {
+		if (err) res.send ({status: 'error', message: 'error uploading'});
+		else {
+			mongoose.Promise = es6Promise;
+			mongoose.connect (config.host, config.db);
+
+			User.findOne ({username: req.user.username}, (err, doc) => {
+				if (err) { 
+					res.send ({status: 'error', message: 'Error '+ err});
+					mongoose.disconnect ();
+				}
+				else if (doc) {
+					doc.photo = {
+						mime: req.image.mimetype,
+						value: fs.readFileSync ('tempUploads/'+ req.user.username +'_avatar')
+					}
+
+					doc.save ().then (() => {
+						res.send ({status: 'success'});
+						fs.unlinkSync ('tempUploads/'+ req.user.username +'_avatar');
+						mongoose.disconnect ();
+					});
+				} else {
+					res.send ({status: 'error', message: 'User not found'});
+					mongoose.disconnect ();
+				}
+			});
+		}
+	});
 });
 
 router.post ('/signup', (req, res) => {
