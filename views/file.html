@@ -12,6 +12,9 @@
 		<!-- ngResource -->
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.1/angular-resource.min.js'></script>
 
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.min.js'></script>
+    
+    <!--<script src='/javascripts/angular/main.js'></script>-->
     <script src='/javascripts/angular/main.js'></script>
     <link href='/stylesheets/style.css' rel='stylesheet' type='text/css'/>
   </head>
@@ -39,10 +42,11 @@
       </nav>
     </header>
 
-    <section class='container' ng-view></section>
+    <section class='container'>
+      <div ui-view></div>
+    </section>
 
     <footer>
-
     </footer>
   </body>
 </html>

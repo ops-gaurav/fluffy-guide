@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='dashboardApp'>
+	<head>
+		<title></title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="https://code.jquery.com/jquery-3.2.0.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I=" crossorigin="anonymous"></script>
+		<link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css' />
+		<script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js'></script>
+		<!-- ngRoute -->
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.min.js'></script>
+		<!-- ngResource -->
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.1/angular-resource.min.js'></script>
+
+
+		<!-- for image upload -->
+		<script src='https://angular-file-upload.appspot.com/js/ng-file-upload-shim.js'></script>
+		<script src='https://angular-file-upload.appspot.com/js/ng-file-upload.js'></script>
+		<script src='/javascripts/angular/dashboard.js'></script>
+
+	</head>
+	<body ng-controller='DashboardController'>
+		<header>
+			<nav class="navbar navbar-default" role="navigation">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Information</a>
+				</div>
+			</nav>
+		</header>
+		<section class='container'>
+			<h1 class='page-header text-center'>Welcome to Dashboard {{username}}</h1>
+			<section class='row'>
+				<section class='col-md-12'>
+					<p class='text-center'>
+						<img src='images/profile.png' width=100 height=100 /><br/>
+						<button type='file' class='btn btn-link' ngf-select='fileUpload ($file, $invalidFiles)' accept='image/*'>Change picture</button>
+					</p>
+				</section>
+			</section>
+			<section class='row'>
+				<section class='col-md-8'>
+					Username: <b> {{username}}</b><br/>
+					Email: <b>{{email}}</b>
+				</section>
+				<section class='col-md-4'>
+					<a class='btn btn-default'>Change details</a><br/><br/>
+					<a class='btn btn-default'>Change password</a> <br/><br/>
+					<a class='btn btn-default' ng-click='logout()'>Logout</a>
+				</section>
+			</section>
+		</section>
+	</body>
+</html>

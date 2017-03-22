@@ -6,13 +6,14 @@ import pLocal from 'passport-local';
 import UserSchema from '../models/UserModel';
 import config from '../data/config';
 import mongoose from  'mongoose';
+import Busboy from 'busboy';
 
 var User = mongoose.model ('user', UserSchema);
 
 var LocalStrategy = pLocal.Strategy;
 
 // we created a startegy here. now we assign it to a route
-passport.use (new LocalStrategy ({
+passport.use ('LocalLoginAuthentication', new LocalStrategy ({
 	usernameField: 'username',
 	passwordField: 'password'
 },function (username, password, done){
@@ -33,22 +34,39 @@ passport.serializeUser ((user, done) => {
 passport.deserializeUser ((user, done) => {
     done (null, user);
 });
-// failureFlash will insturct the passport to flash an error message using the message option set by the verify callback
-// router.post ('/auth', passport.authenticate('local', { 
-// 	successRedirect: '/dashboard', 
-// 	failureRedirect: '/', 
-// 	failureFlash: 'Invalid username or password'}), function (req, res) {
-//     	res.redirect ('/');
-//     	// if auth fail then passport will send 401 unauthorized error
-// });
-
 /*
-UNDERSTAND THIS CONCEPT flash, session
+UNDERSTAND THIS CONCEPT flash
 */
-router.post ('/auth', passport.authenticate ('local', {
+router.post ('/auth', passport.authenticate ('LocalLoginAuthentication', {
 	failureFlash: 'Error Authenticating', 
 	successFlash: 'Authenticated'}), (req, res) => {
-	res.end();
+	
+    res.send ({status: 'success', message: 'authenticated'});
+});
+
+router.get ('/sessioninfo', (req, res) => {
+    if (req.isAuthenticated())
+        res.send ({status: 'success', data: req.user});
+    else
+        res.send ({status: 'error', message: 'Login first'});
+});
+
+router.get ('/logout', (req, res) => {
+    req.logout();
+    res.send ({status: 'success', message: 'Session destroyed'});
+});
+
+router.put ('/image', (req, res) => {
+    console.log (req.headers);
+    //console.log (req.files);
+    var busboy = new Busboy ({headers: req.headers});
+    busboy.on ('file', (fieldname, file, filename, encoding, mimetype)=> {
+        console.log ('file');
+        file.on ('data', (data) => {
+            console.log (data.length+' byte(s) sent');
+        });
+    });
+    res.end ();
 });
 
 router.post ('/signup', (req, res) => {

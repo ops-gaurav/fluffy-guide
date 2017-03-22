@@ -3,9 +3,10 @@ import config from '../data/config';
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema ({
-	username: String,
-	password: String,
-	email: String
+	username: {type: String, required:true},
+	password: {type: String, required: true},
+	email: {type: String, required: true},
+	photo: Buffer
 });
 
 var User = mongoose.model ('user', UserSchema);

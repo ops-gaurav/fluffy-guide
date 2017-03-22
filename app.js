@@ -33,6 +33,7 @@ app.use(sassMiddleware({
 }));
 app.use (expressSession ({secret: 'winteriscoming', resave: false, saveUninitialized: true, cookie: {maxAge: 1000000000000}}));
 
+
 app.use (flash());
 app.use (passport.initialize ());
 app.use (passport.session ());
@@ -42,12 +43,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use ('/user', usersRouter);
 
-app.get ('/dashboard', (req, res) => {
-	res.send ({status: 'error', message: 'this is dashboard'});
-});
-app.get ('/', (req, res) => {
-	res.send ({status: 'error', message:'this is error page'});
-});
 
 
 export default app;

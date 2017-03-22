@@ -1,7 +1,7 @@
 <section class='container custom-container'>
     <section class='col-md-3'></section>
     <section class='col-md-6'>
-        <form method="POST" role="form">
+        <form>
             <legend>Sign up form</legend>
 
             <div class="form-group">
@@ -11,7 +11,7 @@
                 <input type='password' ng-model='cPassword' class='form-control' placeholder="Confirm password" />
             </div>
 
-            <p class='text-center'><button ng-click='signup()' type="submit" class="btn btn-primary btn-sm">SIGN UP</button></p>
+            <p class='text-center'><button ng-click='signup()' type="button" class="btn btn-primary btn-sm">SIGN UP</button></p>
             <p class="text-center">Already a member? <a href='/' class='btn btn-link'>Login</a></p>
             <p class='error text-center' ng-show='auth_error' style='color: darkred' ng-bind='auth_error'></p>
         </form>
