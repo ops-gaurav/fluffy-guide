@@ -111,13 +111,19 @@ router.get ('/image', (req, res) => {
 		mongoose.connect (config.host, config.db);
 
 		User.findOne ({username: req.user.username}, (err, doc) => {
-			if (err) res.send ({status: 'error', message: 'server error: '+ err});
+			if (err) {
+				res.send ({status: 'error', message: 'server error: '+ err});
+				mongoose.disconnect ();
+			}
 			else if (doc) {
 				res.contentType (doc.photo.mime);
 				res.send (doc.photo.value);
-			} else res.send ({status: 'error', message: 'No data'});
 
-			mongoose.disconnect ();
+				mongoose.disconnect ();
+			} else {
+				res.send ({status: 'error', message: 'No data'});
+				mongoose.disconnect ();
+			}
 		});
 	} else res.send ({status: 'error', message: 'no session'});
 });

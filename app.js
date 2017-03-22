@@ -8,7 +8,7 @@ import path from 'path';
 import passport from 'passport';
 import pLocal from 'passport-local';  // this is a strategy for username/password authentication
 import flash from 'connect-flash';
-import sassMiddleware from 'node-sass-middleware';
+//import sassMiddleware from 'node-sass-middleware';
 import index from './routes/index';
 import usersRouter from './routes/user';
 import multer from 'multer';
@@ -28,14 +28,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(sassMiddleware({
-    src: path.join(__dirname, 'public'),
-    dest: path.join(__dirname, 'public'),
-    indentedSyntax: true,
-    sourceMap: true
-}));
 app.use (expressSession ({secret: 'winteriscoming', resave: false, saveUninitialized: true, cookie: {maxAge: 1000000000000}}));
-
 
 app.use (flash());
 app.use (passport.initialize ());
@@ -48,7 +41,5 @@ app.get ('/uus', (req, res) => {
 });
 app.use('/', index);
 app.use ('/user', usersRouter);
-
-
 
 export default app;

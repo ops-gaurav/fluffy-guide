@@ -1,15 +1,39 @@
+*{
+	transition: all .25s ease-in-out;
+}
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+  font: 14px "Raleway"}
+
 
 a {
-  color: #00B7FF; }
+  color: #00B7FF; 
+  cursor: pointer;
+}
 
 header {
   background: #383838; }
 
-custom-container {
-  border: solid 1px #f0f0f0;
-  background: #fafafa;
-  padding: 10px; }
+.navbar {
+	border-radius: 0px;
+}
+ .navbar-brand {
+ 	font-family: Pacifico;
+ }
+ .pic {
+ 	box-shadow: 0px 0px 1px 0px silver;
+ 	border-radius: 5px;
+ 	padding: 20px;
+ }
+ .pic:hover {
+ 	box-shadow: 3px 3px 10px 1px silver;
+ }
 
-/*# sourceMappingURL=style.css.map */
+.info-container-abs {
+ 	background: #fafafa;
+ 	border: solid 1px #f0f0f0;
+ 	padding: 20px 10px 20px 10px;
+ }
+ .quote {
+ 	font-family: Satisfy;
+ 	font-size: 2.5vmin;
+ }

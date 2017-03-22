@@ -3,6 +3,8 @@
 	<head>
 		<title></title>
 		<meta charset="UTF-8">
+		<link href="https://fonts.googleapis.com/css?family=Pacifico|Satisfy|Raleway" rel="stylesheet">
+
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="https://code.jquery.com/jquery-3.2.0.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I=" crossorigin="anonymous"></script>
 		<link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css' />
@@ -19,41 +21,79 @@
 		<script src='https://angular-file-upload.appspot.com/js/ng-file-upload.js'></script>
 		<script src='/javascripts/angular/dashboard.js'></script>
 
+		<link href='/stylesheets/style.css' type='text/css' rel='stylesheet' />
+
 	</head>
 	<body ng-controller='DashboardController'>
 		<header>
-			<nav class="navbar navbar-default" role="navigation">
-				<!-- Brand and toggle get grouped for better mobile display -->
+			<nav class="navbar navbar-default text-center" role="navigation">
 				<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">Information</a>
+				<a class="navbar-brand" href="#">Portfolio</a>
 				</div>
 			</nav>
 		</header>
 		<section class='container'>
 			<h1 class='page-header text-center'>Welcome to Dashboard {{username}}</h1>
 			<section class='row'>
-				<section class='col-md-12'>
+				<section class='col-md-2 pic'>
 					<p class='text-center'>
-						<img id='user-img' src='/user/image' width=100 height=100  class='img-circle'/><br/>
-						<a type='file' name='file' ngf-pattern="'image/*'" accept='image/*' class='btn btn-default' ngf-select='fileUpload ($file, $invalidFiles)' accept='image/*'>Change picture</a>
+						<img id='user-img' src='/user/image' width=100 height=100  class='img-circle'/><br/><a type='file' name='file' ngf-pattern="'image/*'" accept='image/*' class='btn btn-link' ngf-select='fileUpload ($file, $invalidFiles)' accept='image/*'>Change picture</a>
 					</p>
+				</section>
+				<section class='col-md-10'>
+						<section class='info-container-abs'>
+							<b> {{username}}</b> <br/><b>{{email}}</b>
+						</section>
 				</section>
 			</section>
 			<section class='row'>
 				<section class='col-md-8'>
-					Username: <b> {{username}}</b><br/>
-					Email: <b>{{email}}</b>
+					<p class='text-center'>{{username}}'s Favourite music: <b class='label label-success'>Top of the world by <em>Carpenters</em></b> <br/><br/></p>
+					<section class='jumbotron quote'>
+						<p class='pull-right'><img src='https://upload.wikimedia.org/wikipedia/en/archive/e/e3/20161122153356!Singles_1969-1981.jpg' height=200/></p>
+						Such a feelin's comin' over me<br/>
+						There is wonder in most every thing I see<br/>
+						Not a cloud in the sky, got the sun in my eyes<br/>
+						And I won't be surprised if it's a dream<br/>
+						<br/>
+						Everything I want the world to be<br/>
+						Is now comin' true especially for me<br/>
+						And the reason is clear, it's because you are here<br/>
+						You're the nearest thing to Heaven that I've seen<br/>
+						<br/>
+						I'm on the top of the world lookin' down on creation<br/>
+						And the only explanation I can find<br/>
+						Is the love that I've found ever since you've been around<br/>
+						Your love's put me at the top of the world<br/>
+						<br/>
+						Somethin' in the wind has learned my name<br/>
+						And it's tellin' me that things are not the same<br/>
+						In the leaves on the trees and the touch of the breeze<br/>
+						There's a pleasin' sense of happiness for me<br/>
+						<br/>
+						There is only one wish on my mind<br/>
+						When this day is through I hope that I will find<br/>
+						That tomorrow will be just the same for you and me<br/>
+						All I need will be mine if you are here<br/>
+						<br/>
+						I'm on the top of the world lookin' down on creation<br/>
+						And the only explanation I can find<br/>
+						Is the love that I've found ever since you've been around<br/>
+						Your love's put me at the top of the world<br/>
+						<br/>
+						I'm on the top of the world lookin' down on creation<br/>
+						And the only explanation I can find<br/>
+						Is the love that I've found ever since you've been around<br/>
+						Your love's put me at the top of the world<br/>
+						<br/>
+					</section>
 				</section>
-				<section class='col-md-4'>
-					<a class='btn btn-default'>Change details</a><br/><br/>
-					<a class='btn btn-default'>Change password</a> <br/><br/>
-					<a class='btn btn-default' ng-click='logout()'>Logout</a>
+				<section class='col-md-4 text-center'>
+					<ul class="list-group">
+						<a class='list-group-item'>Change details</a>
+						<a class='list-group-item'>Change password</a>
+						<a class='list-group-item' ng-click='logout()'>Logout</a>
+					</ul>
 				</section>
 			</section>
 		</section>

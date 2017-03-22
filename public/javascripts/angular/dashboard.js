@@ -14,31 +14,34 @@ app.controller ('DashboardController', ['$scope', '$http', '$window', 'Upload', 
 		});
 	};
 
-	// CANNOT UPLOAD PIC MORE THAN ONCE WITHOUT RELOADING PAGE
+	// ********** FIXED :) ***********	
+	// ------> :) CANNOT UPLOAD PIC MORE THAN ONCE WITHOUT RELOADING PAGE :) <-----
 	// CHECK
 	$scope.fileUpload= function (file, errFiles) {
-		$scope.file = file;
-		var url= '/user/image';
-		Upload.upload ({
-			url: url,
-			method: 'PUT',
-			data: {avatar: file}
-		}). then (function (resp){ // success
-			// https://github.com/danialfarid/ng-file-upload
-			var response = resp.data;
-			if (response.status == 'success') {
-				console.log ('uploaded');
-				$('#user-img').attr ('src', '/user/image');
-			} else {
-				console.log ('some error '+ response.message);
-			}
-			
-		}, function (res) {
-			//catch error
-			console.log ('Error: '+ resp);
-		}, function (event) {
+		if (file) {
+			$scope.file = file;
+			var url= '/user/image';
+			Upload.upload ({
+				url: url,
+				method: 'PUT',
+				data: {avatar: file}
+			}). then (function (resp){ // success
+				// https://github.com/danialfarid/ng-file-upload
+				var response = resp.data;
+				if (response.status == 'success') {
+					console.log ('uploaded');
+					$('#user-img').attr ('src', '/user/image');
+				} else {
+					console.log ('some error '+ response.message);
+				}
+				
+			}, function (res) {
+				//catch error
+				console.log ('Error: '+ resp);
+			}, function (event) {
 
-		});
+			});
+		}
 	};
 }]);
 
