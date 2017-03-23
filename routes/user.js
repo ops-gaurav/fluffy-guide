@@ -116,9 +116,17 @@ router.get ('/image', (req, res) => {
 				mongoose.disconnect ();
 			}
 			else if (doc) {
-				res.contentType (doc.photo.mime);
-				res.send (doc.photo.value);
-
+                // check if image exists in database
+                if (doc.photo.mime){
+                    // send the image
+                    res.contentType (doc.photo.mime);
+				    res.send (doc.photo.value);
+                } else {
+                    // send default pic otherwise
+                    var image = fs.readFileSync (__dirname +'/../public/images/profile.png');
+                    res.writeHead (200, {'Content-Type': 'image/png'});
+                    res.end (image, 'binary');
+                } 
 				mongoose.disconnect ();
 			} else {
 				res.send ({status: 'error', message: 'No data'});
