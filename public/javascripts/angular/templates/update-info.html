@@ -1,0 +1,21 @@
+<a class='btn btn-default' href='/dBoard'>
+	<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+</a>
+<br/>
+<br/>
+<section class='container'>
+	<section class='row'>
+		<section class='col-md-3'></section>
+		<section class='col-md-6'>
+			
+            <div class="form-group">
+                <input type="text" ng-model='newUsername' class="form-control" id="" placeholder="{{username}}" required/> <br/>
+                <input type='text' ng-model='newEmail' class='form-control' placeholder="{{email}}" required/> <br/>
+            </div>
+
+            <p class='text-center'><button ng-click='updateInfo()' type="button" class="btn btn-primary btn-sm">UPDATE</button></p>
+            <p class='error text-center' ng-show='auth_error' style='color: darkred' ng-bind='auth_error'></p>
+		</section>
+		<section class='col-md-3'></section>
+	</section>
+</section>

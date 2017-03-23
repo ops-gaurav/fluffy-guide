@@ -204,4 +204,66 @@ router.post ('/signup', (req, res) => {
     }
 });
 
+router.put ('/updateInfo', (req, res) => {
+    if (req.user) {
+        var data = req.body;
+        if (data) {
+            mongoose.Promise = es6Promise;
+            mongoose.connect (config.host, config.db);
+
+            User.findOne ({username: req.user.username}, (err, doc) => {
+                if (err) {
+                    res.send ({status: 'error', message: 'Error: '+ err});
+                    mongoose.disconnect();
+                }
+                else if (doc) {
+                    doc.username = data.username;
+                    doc.email = data.email;
+
+                    doc.save(). then (() => {
+                        req.login (doc, (err) => {
+                            if (err) res.send ({status: 'error', message: 'error updating session. Relogin'});
+                            else res.send ({status: 'success', message: 'Updated',username: data.username, email: data.email});
+                        });
+                        mongoose.disconnect ();
+                    });
+                }else {
+                    res.send ({status: 'error', message: 'no user found'});
+                    mongoose.disconnect ();
+                }
+            });
+        } else res.send ({status:'error', message: 'No data'});
+    } else res.send ({status: 'error', message: 'Login first'});
+})
+
+
+router.put ('/updatePassword', (req, res) => {
+    if (req.user) {
+        // if session exists
+        var data = req.body;
+        console.log (data);
+        if (data.oldPass, data.newPass) {
+            mongoose.Promise = es6Promise;
+            mongoose.connect (config.host, config.db);
+
+            User.findOne ({username: req.user.username, password: data.oldPass}, (err, doc) => {
+                if (err) { 
+                    res.send ({status: 'error', message: 'Error: '+ err});
+                    mongoose.disconnect ();
+                }
+                else if (doc) {
+                    doc.password = data.newPass;
+                    doc.save().then (() => {
+                        res.send ({status: 'success', message: 'Password updated.'});
+                        mongoose.disconnect ();
+                    });
+                } else {
+                    res.send ({status: 'error', message: 'Incorrect old password'});
+                    mongoose.disconnect();
+                }
+            });
+
+        } else res.send ({status: 'error', message: 'Require old and new password'});
+    } else res.send ({status: 'error', message: 'Login first'});
+});
 module.exports = router;

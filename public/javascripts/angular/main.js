@@ -24,11 +24,10 @@ mainApp.controller ('LoginController', ['$scope', '$window', 'UserServices', fun
 		if (!$scope.username || !$scope.password) 
 			$scope.auth_error =  "Username and password required";
 		else {
+			$scope.auth_error = "Username or password error";
 			UserServices.loginAuth().authenticate ({username: $scope.username, password: $scope.password}, (data) => {
 				if (data.status == 'success')
 					$window.location = '/dashboard';
-				else
-					$scope.auth_error = 'Username or password error'
 			});
 		}
 	}

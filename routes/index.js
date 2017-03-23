@@ -14,7 +14,7 @@ router.get ('/dashboard', (req, res) => {
     res.sendFile (path.resolve (__dirname+ '/../views/dashboard.html'));
   } else {
     console.log ('session error');
-    res.sendFile (path.resolve (__dirname+ '/../views/sessionerror.html'));
+    res.sendFile (pagauracvth.resolve (__dirname+ '/../views/sessionerror.html'));
   }
 })
 
